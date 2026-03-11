@@ -25,10 +25,16 @@ jobs:
       - name: Django check
         run: python manage.py check --settings=game_scout.settings.test
 
+      - name: Check missing migrations
+        run: python manage.py makemigrations --check --dry-run --settings=game_scout.settings.test
+
       - name: Lint
         run: |
           ruff check .
           black --check .
+
+      - name: Type check
+        run: mypy .
 
       - name: Tests
         run: pytest

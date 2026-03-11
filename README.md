@@ -74,6 +74,27 @@ docker compose up -d --build
 docker compose exec web python manage.py migrate
 ```
 
+## CI and Branch Protection
+
+CI workflow:
+- File: `.github/workflows/ci.yml`
+- Job name: `quality`
+- Checks run in CI:
+  - `python manage.py check --settings=game_scout.settings.test`
+  - `python manage.py makemigrations --check --dry-run --settings=game_scout.settings.test`
+  - `ruff check .`
+  - `black --check .`
+  - `mypy .`
+  - `pytest`
+
+Branch protection (set in GitHub UI):
+1. Go to `Settings` -> `Branches` -> `Add branch protection rule`.
+2. Branch pattern: `main`.
+3. Enable `Require a pull request before merging`.
+4. Enable `Require status checks to pass before merging`.
+5. Add required check: `quality`.
+6. Save the rule.
+
 ## Repository Structure
 
 ```text
