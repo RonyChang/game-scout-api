@@ -9,12 +9,17 @@ Game Scout Platform provides:
 - A commercial layer with API keys, usage plans, rate limiting, and quotas.
 - A public website for integration docs, pricing, and onboarding.
 
-## Project Status
+## Current Status
 
-This repository is currently in the initial commit stage (documentation-first).  
-Core Django code, API endpoints, and deployment files are planned and will be added in the next implementation commits.
+Initial Django scaffold is in place:
+- Environment-aware settings (`base`, `dev`, `test`, `prod`).
+- PostgreSQL-ready database configuration via `DATABASE_URL`.
+- DRF + OpenAPI docs setup (`drf-spectacular`).
+- Health endpoints (`/health/live/`, `/health/ready/`).
+- Public web routes (`/`, `/docs/`, `/pricing/`, `/contact/`).
+- CI baseline (lint + tests).
 
-## Planned MVP Features
+## MVP Scope
 
 - Game catalog with filters and game detail endpoints.
 - User profiles with preferences and interactions.
@@ -34,43 +39,63 @@ Core Django code, API endpoints, and deployment files are planned and will be ad
 - Celery
 - Docker / Docker Compose
 
-## Planned API Snapshot
+## API Snapshot
 
 Base path: `/api/v1`
 
-- `POST /auth/register`
-- `POST /auth/login`
-- `GET /games`
-- `GET /users/{id}/recommendations`
-- `POST /api-keys`
-- `GET /usage/current`
-- `GET /usage/limits`
+- `GET /api/v1/` (scaffold root endpoint)
+- `GET /api/schema/`
+- `GET /api/docs/`
+- `GET /api/redoc/`
 
-## Planned Website Routes
+## Website Routes
 
 - `GET /` landing
 - `GET /docs` integration guide
 - `GET /pricing` plans
 - `GET /contact` onboarding
-- `GET /api/docs` Swagger UI
-- `GET /api/redoc` ReDoc
 
-## Next Implementation Steps
+## Quickstart (Local)
 
-1. Bootstrap Django project and app structure.
-2. Add database models and migrations.
-3. Implement API key auth, rate limiting, and quota enforcement.
-4. Build recommendation flow and usage tracking.
-5. Add public website pages and API documentation UI.
+```bash
+python -m venv .venv
+.venv\Scripts\activate
+pip install -r requirements-dev.txt
+copy .env.example .env
+python manage.py check
+python manage.py migrate
+python manage.py runserver
+```
+
+## Quickstart (Docker)
+
+```bash
+docker compose up -d --build
+docker compose exec web python manage.py migrate
+```
 
 ## Repository Structure
 
 ```text
 game-scout-api/
+|-- .github/workflows/
+|-- apps/
+|-- data/
+|-- docker/
+|-- game_scout/
+|-- scripts/
+|-- static/
+|-- templates/
+|-- tests/
+|-- .env.example
 |-- .gitignore
+|-- docker-compose.yml
 |-- LICENSE
+|-- manage.py
 |-- README.md
-`-- (code scaffold coming in next commits)
+|-- requirements-dev.txt
+|-- requirements.txt
+`-- pyproject.toml
 ```
 
 ## License
